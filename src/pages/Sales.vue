@@ -16,6 +16,7 @@
         <button
           class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
           type="button"
+          @click="onAdd"
         >
           Add Items
         </button>
@@ -106,16 +107,6 @@
             >
               Total Bayar
             </th>
-            <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-gray-50 text-gray-500 border-gray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
-            >
-              Aksi
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -165,22 +156,6 @@
             >
               Rp. 45.000
             </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <button
-                class="bg-amber-500 text-white active:bg-amber-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-              >
-                UPDATE
-              </button>
-              <button
-                class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-              >
-                DELETE
-              </button>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -195,6 +170,11 @@ export default {
     return {
       color: "light",
     };
+  },
+  methods: {
+    onAdd() {
+      alert("Add Item");
+    },
   },
 };
 </script>

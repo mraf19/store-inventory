@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <h2 class="text-xl font-bold text-sky-950">This is my Home</h2>
+  <div class="m-auto w-full">
+    <h1 class="text-gray-600 text-3xl text-center">
+      Welcome to Dashboard Store Inventory
+    </h1>
   </div>
 </template>
 

@@ -166,9 +166,11 @@
 <script>
 export default {
   name: "Sales",
+  created() {},
   data() {
     return {
       color: "light",
+      data: [],
     };
   },
   methods: {},

@@ -13,13 +13,13 @@
             Items Tables
           </h3>
         </div>
-        <button
+        <RouterLink
+          to="/form-item"
           class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
           type="button"
-          @click="onAdd"
         >
           Add Items
-        </button>
+        </RouterLink>
       </div>
     </div>
     <div class="block w-full overflow-x-auto">
@@ -147,10 +147,21 @@
         </tbody>
       </table>
     </div>
+    <Alert v-show="showAlert" @close="showAlert = false" />
+    <Teleport to="body">
+      <div
+        :class="showAlert ? '' : 'hidden'"
+        class="fixed inset-0 top-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+        id="my-modal"
+      ></div>
+    </Teleport>
   </div>
 </template>
 
 <script>
+import Alert from "../components/Alert.vue";
+import ButtonMixin from "../mixins/button";
+
 export default {
   name: "Home",
   data() {
@@ -158,17 +169,11 @@ export default {
       color: "light",
     };
   },
-  methods: {
-    onAdd() {
-      alert("Add Item");
-    },
-    onUpdate() {
-      alert("Update Item");
-    },
-    onDelete() {
-      alert("Delete Item");
-    },
+  components: {
+    Alert,
   },
+  methods: {},
+  mixins: [ButtonMixin],
 };
 </script>
 

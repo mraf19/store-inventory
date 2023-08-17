@@ -5,6 +5,9 @@ import Items from "../pages/Items.vue";
 import Customers from "../pages/Customers.vue";
 import Sales from "../pages/Sales.vue";
 import Home from "../pages/Home.vue";
+import FormItem from "../components/FormItem.vue";
+import FormCustomer from "../components/FormCustomer.vue";
+import FormSales from "../components/FormSales.vue";
 
 const routes = [
   {
@@ -31,6 +34,21 @@ const routes = [
         name: " Sales",
         path: "/sales",
         component: Sales,
+      },
+      {
+        name: "FormItem",
+        path: "/form-item",
+        component: FormItem,
+      },
+      {
+        name: "FormCustomer",
+        path: "/form-customer",
+        component: FormCustomer,
+      },
+      {
+        name: "FormSales",
+        path: "/form-sales",
+        component: FormSales,
       },
     ],
   },

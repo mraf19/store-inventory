@@ -89,6 +89,23 @@
 import axios from "axios";
 export default {
   name: "Form",
+  mounted() {
+    if (this.$route.params.id) {
+      const id = this.$route.params.id;
+      axios
+        .get(`http://localhost:3000/api/item/${id}`)
+        .then((res) => {
+          const data = res.data.data[0];
+          console.log(data);
+          this.formValue.nama_item = data.nama_item;
+          this.formValue.harga_satuan = data.harga_satuan;
+          this.formValue.stok = data.stok;
+          this.formValue.unit = data.unit;
+          console.log(this.formValue);
+        })
+        .catch((err) => console.log(err));
+    }
+  },
   data() {
     return {
       formValue: {

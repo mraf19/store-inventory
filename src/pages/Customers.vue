@@ -150,9 +150,7 @@
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
                 <img
-                  :src="
-                    'http://localhost:3000/public/images/customers/' + item.ktp
-                  "
+                  :src="'http://localhost:3000/images/customers/' + item.ktp"
                   :class="item.ktp ? '' : 'hidden'"
                   alt="..."
                   class="w-10 h-10 rounded-full border-2 border-gray-50 shadow"

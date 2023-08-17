@@ -26,7 +26,7 @@ const routes = [
         component: Items,
       },
       {
-        name: "Customes",
+        name: "Customers",
         path: "/customers",
         component: Customers,
       },
@@ -41,13 +41,28 @@ const routes = [
         component: FormItem,
       },
       {
+        name: "FormItemUpdate",
+        path: "/form-item/:id",
+        component: FormItem,
+      },
+      {
         name: "FormCustomer",
         path: "/form-customer",
         component: FormCustomer,
       },
       {
+        name: "FormCustomerUpdate",
+        path: "/form-customer/:id",
+        component: FormCustomer,
+      },
+      {
         name: "FormSales",
         path: "/form-sales",
+        component: FormSales,
+      },
+      {
+        name: "FormSalesUpdate",
+        path: "/form-sales/:id",
         component: FormSales,
       },
     ],

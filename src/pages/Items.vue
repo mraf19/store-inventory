@@ -120,7 +120,7 @@
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
                 <img
-                  :src="item.barang"
+                  :src="'http://localhost:3000/images/customers/' + item.barang"
                   :class="item.barang ? '' : 'hidden'"
                   alt="..."
                   class="w-10 h-10 rounded-full border-2 border-gray-50 shadow"
@@ -132,7 +132,7 @@
                 <button
                   class="bg-amber-500 text-white active:bg-amber-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
-                  @click="onUpdate"
+                  @click="onUpdate(item._id)"
                 >
                   UPDATE
                 </button>
@@ -187,6 +187,9 @@ export default {
           this.data = res.data.data;
         })
         .catch((err) => console.log(err));
+    },
+    onUpdate(id) {
+      this.$router.push({ name: "FormItemUpdate", params: { id } });
     },
   },
   mixins: [ButtonMixin],

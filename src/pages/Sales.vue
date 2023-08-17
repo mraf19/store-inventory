@@ -130,12 +130,12 @@
               <td
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                {{ item.customer }}
+                {{ item.customer.nama }}
               </td>
               <td
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                {{ item.items }}
+              <template v-for="product in item.items" :key="product._id">{{product.nama_item}}</template>
               </td>
               <td
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
@@ -145,7 +145,7 @@
               <td
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                {{ item.diskon }}
+                {{ item.total_diskon }}
               </td>
               <td
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
@@ -166,9 +166,10 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
   name: "Sales",
-  created() {},
+  created() { this.getData()},
   data() {
     return {
       color: "light",

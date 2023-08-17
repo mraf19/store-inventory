@@ -144,7 +144,7 @@
               <td
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                {{ item.presentase }}
+                {{ item.tipe_diskon }}
               </td>
               <td
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
@@ -169,7 +169,7 @@
                 <button
                   class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
-                  @click="onDelete"
+                  @click="onDelete(item._id)"
                 >
                   DELETE
                 </button>
@@ -179,20 +179,10 @@
         </tbody>
       </table>
     </div>
-    <Alert v-show="showAlert" @close="showAlert = false" />
-    <Teleport to="body">
-      <div
-        :class="showAlert ? '' : 'hidden'"
-        class="fixed inset-0 top-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
-        id="my-modal"
-      ></div>
-    </Teleport>
   </div>
 </template>
 
 <script>
-import Alert from "../components/Alert.vue";
-import ButtonMixin from "../mixins/button";
 import axios from "axios";
 
 export default {
@@ -211,7 +201,6 @@ export default {
       axios
         .get("http://localhost:3000/api/customer")
         .then((res) => {
-          console.log(res);
           this.data = res.data.data;
         })
         .catch((err) => console.log(err));
@@ -219,11 +208,16 @@ export default {
     onUpdate(id) {
       this.$router.push({ name: "FormCustomerUpdate", params: { id } });
     },
+    onDelete(id) {
+      const rootUrl = "http://localhost:3000/api";
+      axios
+        .delete(`${rootUrl}/customer/${id}`)
+        .then((res) => {
+          this.$router.go();
+        })
+        .catch((err) => console.log(err));
+    },
   },
-  components: {
-    Alert,
-  },
-  mixins: [ButtonMixin],
 };
 </script>
 

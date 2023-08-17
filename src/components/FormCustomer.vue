@@ -88,8 +88,8 @@
         v-model="formValue.tipe_diskon"
       >
         <option selected>Pilih Pelanggan</option>
-        <option value="presentase">Persentase</option>
-        <option value="fix diskon">Fix Diskon</option>
+        <option value="persentase">Persentase</option>
+        <option value="fix_diskon">Fix Diskon</option>
       </select>
     </div>
     <div>
@@ -107,10 +107,20 @@
       />
     </div>
     <button
-      type="submit"
+      v-if="type === 'Add'"
+      type="button"
       class="w-full text-white bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      @click="onsubmit"
     >
       Submit
+    </button>
+    <button
+      v-if="type === 'Edit'"
+      type="button"
+      class="w-full text-white bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      @click="onEdit($route.params.id)"
+    >
+      Edit
     </button>
   </form>
 </template>
@@ -122,25 +132,26 @@ export default {
   name: "FormItem",
   mounted() {
     if (this.$route.params.id) {
+      this.type = "Edit";
       const id = this.$route.params.id;
       axios
         .get(`http://localhost:3000/api/customer/${id}`)
         .then((res) => {
           const data = res.data.data[0];
-          console.log(data);
+
           this.formValue.nama = data.nama;
           this.formValue.alamat = data.alamat;
           this.formValue.contact = data.contact;
           this.formValue.diskon = data.diskon;
           this.formValue.email = data.email;
           this.formValue.tipe_diskon = data.tipe_diskon;
-          console.log(this.formValue);
         })
         .catch((err) => console.log(err));
     }
   },
   data() {
     return {
+      type: "Add",
       formValue: {
         nama: "",
         contact: "",
@@ -169,11 +180,36 @@ export default {
       form.append("tip[e_diskon]", this.formValue.tipe_diskon);
       form.append("image", this.formValue.ktp);
 
-      console.log(this.formValue);
       axios
         .post(`${rootUrl}/customer`, form)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          this.$router.push("/customers");
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    },
+    onEdit(id) {
+      const rootUrl = "http://localhost:3000/api";
+
+      const form = new FormData();
+
+      form.append("nama", this.formValue.nama);
+      form.append("contact", this.formValue.contact);
+      form.append("alamat", this.formValue.alamat);
+      form.append("email", this.formValue.email);
+      form.append("diskon", this.formValue.diskon);
+      form.append("tip[e_diskon]", this.formValue.tipe_diskon);
+      form.append("image", this.formValue.ktp);
+
+      axios
+        .put(`${rootUrl}/customer/${id}`, form)
+        .then((res) => {
+          this.$router.push("/customers");
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
     },
   },
 };

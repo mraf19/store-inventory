@@ -1,5 +1,5 @@
 <template>
-  <h2 class="mb-10 text-4xl text-gray-900 font-bold">Submit Data</h2>
+  <h2 class="mb-10 text-4xl text-gray-900 font-bold">{{ type }} Data</h2>
   <form class="space-y-6 w-2/3">
     <div>
       <label
@@ -76,38 +76,49 @@
       />
     </div>
     <button
+      v-if="type === 'Add'"
       type="button"
       class="w-full text-white bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
       @click="onsubmit"
     >
       Submit
     </button>
+    <button
+      v-if="type === 'Edit'"
+      type="button"
+      class="w-full text-white bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+      @click="onEdit"
+    >
+      Edit
+    </button>
   </form>
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
   name: "Form",
   mounted() {
     if (this.$route.params.id) {
+      this.type = "Edit";
       const id = this.$route.params.id;
       axios
         .get(`http://localhost:3000/api/item/${id}`)
         .then((res) => {
           const data = res.data.data[0];
-          console.log(data);
+
           this.formValue.nama_item = data.nama_item;
           this.formValue.harga_satuan = data.harga_satuan;
           this.formValue.stok = data.stok;
           this.formValue.unit = data.unit;
-          console.log(this.formValue);
         })
         .catch((err) => console.log(err));
     }
   },
   data() {
     return {
+      type: "Add",
       formValue: {
         nama_item: "",
         unit: "",
@@ -123,6 +134,25 @@ export default {
     },
     onsubmit() {
       const rootUrl = "http://localhost:3000/api";
+      const form = new FormData();
+
+      form.append("nama_item", this.formValue.nama_item);
+      form.append("unit", this.formValue.unit);
+      form.append("stok", this.formValue.stok);
+      form.append("harga_satuan", this.formValue.harga_satuan);
+      form.append("image", this.formValue.barang);
+
+      axios
+        .post(`${rootUrl}/item`, form)
+        .then((res) => {
+          this.$router.push("/items");
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    },
+    onEdit(id) {
+      const rootUrl = "http://localhost:3000/api";
 
       const form = new FormData();
 
@@ -130,13 +160,16 @@ export default {
       form.append("unit", this.formValue.unit);
       form.append("stok", this.formValue.stok);
       form.append("harga_satuan", this.formValue.harga_satuan);
-      form.append("barang", this.formValue.barang);
+      form.append("image", this.formValue.barang);
 
-      console.log(this.formValue);
       axios
-        .post(`${rootUrl}/item`, form)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .put(`${rootUrl}/item/${id}`, form)
+        .then((res) => {
+          this.$router.push("/items");
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
     },
   },
 };

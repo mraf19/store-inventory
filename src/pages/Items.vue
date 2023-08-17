@@ -120,7 +120,7 @@
                 class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
                 <img
-                  :src="'http://localhost:3000/images/customers/' + item.barang"
+                  :src="'http://localhost:3000/images/products/' + item.barang"
                   :class="item.barang ? '' : 'hidden'"
                   alt="..."
                   class="w-10 h-10 rounded-full border-2 border-gray-50 shadow"
@@ -139,7 +139,7 @@
                 <button
                   class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
-                  @click="onDelete"
+                  @click="onDelete(item._id)"
                 >
                   DELETE
                 </button>
@@ -149,20 +149,10 @@
         </tbody>
       </table>
     </div>
-    <Alert v-show="showAlert" @close="showAlert = false" />
-    <Teleport to="body">
-      <div
-        :class="showAlert ? '' : 'hidden'"
-        class="fixed inset-0 top-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
-        id="my-modal"
-      ></div>
-    </Teleport>
   </div>
 </template>
 
 <script>
-import Alert from "../components/Alert.vue";
-import ButtonMixin from "../mixins/button";
 import axios from "axios";
 
 export default {
@@ -176,9 +166,7 @@ export default {
       data: [],
     };
   },
-  components: {
-    Alert,
-  },
+  components: {},
   methods: {
     getData() {
       axios
@@ -191,8 +179,17 @@ export default {
     onUpdate(id) {
       this.$router.push({ name: "FormItemUpdate", params: { id } });
     },
+    onDelete(id) {
+      const rootUrl = "http://localhost:3000/api";
+      axios
+        .delete(`${rootUrl}/item/${id}`)
+        .then((res) => {
+          console.log(res);
+          this.$router.go();
+        })
+        .catch((err) => console.log(err));
+    },
   },
-  mixins: [ButtonMixin],
 };
 </script>
 

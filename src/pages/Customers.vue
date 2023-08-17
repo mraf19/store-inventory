@@ -162,7 +162,7 @@
                 <button
                   class="bg-amber-500 text-white active:bg-amber-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
-                  @click="onUpdate"
+                  @click="onUpdate(item._id)"
                 >
                   UPDATE
                 </button>
@@ -215,6 +215,9 @@ export default {
           this.data = res.data.data;
         })
         .catch((err) => console.log(err));
+    },
+    onUpdate(id) {
+      this.$router.push({ name: "FormCustomerUpdate", params: { id } });
     },
   },
   components: {

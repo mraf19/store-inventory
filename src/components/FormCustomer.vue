@@ -120,6 +120,25 @@ import axios from "axios";
 
 export default {
   name: "FormItem",
+  mounted() {
+    if (this.$route.params.id) {
+      const id = this.$route.params.id;
+      axios
+        .get(`http://localhost:3000/api/customer/${id}`)
+        .then((res) => {
+          const data = res.data.data[0];
+          console.log(data);
+          this.formValue.nama = data.nama;
+          this.formValue.alamat = data.alamat;
+          this.formValue.contact = data.contact;
+          this.formValue.diskon = data.diskon;
+          this.formValue.email = data.email;
+          this.formValue.tipe_diskon = data.tipe_diskon;
+          console.log(this.formValue);
+        })
+        .catch((err) => console.log(err));
+    }
+  },
   data() {
     return {
       formValue: {

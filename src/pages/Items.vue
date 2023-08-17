@@ -90,60 +90,62 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
-            >
-              <span
-                class="font-bold"
-                :class="[color === 'light' ? 'text-gray-600' : 'text-white']"
+          <template v-for="item in data" :key="item._id">
+            <tr>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                Laptop ASUS ROG X-5000
-              </span>
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              1 Kg/pcs
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              15
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              Rp. 50.0000
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <img
-                src="../assets/MacBook.jpg"
-                alt="..."
-                class="w-10 h-10 rounded-full border-2 border-gray-50 shadow"
-              />
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <button
-                class="bg-amber-500 text-white active:bg-amber-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-                @click="onUpdate"
+                <span
+                  :class="[color === 'light' ? 'text-gray-600' : 'text-white']"
+                >
+                  {{ item.nama_item }}
+                </span>
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                UPDATE
-              </button>
-              <button
-                class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-                @click="onDelete"
+                {{ item.unit }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                DELETE
-              </button>
-            </td>
-          </tr>
+                {{ item.stok }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.harga_satuan }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                <img
+                  :src="item.barang"
+                  :class="item.barang ? '' : 'hidden'"
+                  alt="..."
+                  class="w-10 h-10 rounded-full border-2 border-gray-50 shadow"
+                />
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                <button
+                  class="bg-amber-500 text-white active:bg-amber-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  type="button"
+                  @click="onUpdate"
+                >
+                  UPDATE
+                </button>
+                <button
+                  class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  type="button"
+                  @click="onDelete"
+                >
+                  DELETE
+                </button>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -161,18 +163,32 @@
 <script>
 import Alert from "../components/Alert.vue";
 import ButtonMixin from "../mixins/button";
+import axios from "axios";
 
 export default {
   name: "Home",
+  created() {
+    this.getData();
+  },
   data() {
     return {
       color: "light",
+      data: [],
     };
   },
   components: {
     Alert,
   },
-  methods: {},
+  methods: {
+    getData() {
+      axios
+        .get("http://localhost:3000/api/item")
+        .then((res) => {
+          this.data = res.data.data;
+        })
+        .catch((err) => console.log(err));
+    },
+  },
   mixins: [ButtonMixin],
 };
 </script>

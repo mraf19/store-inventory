@@ -110,70 +110,74 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
-            >
-              <span
-                class="font-bold"
-                :class="[color === 'light' ? 'text-gray-600' : 'text-white']"
+          <template v-for="item in data" :key="item._id">
+            <tr>
+              <th
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                Muhammad Rafli
-              </span>
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              085171019022
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              raflimr1902@gmail.com
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              Tangerang Selatan
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              Free Ongkir
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              Persentase
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <img
-                src="../assets/MacBook.jpg"
-                alt="..."
-                class="w-10 h-10 rounded-full border-2 border-gray-50 shadow"
-              />
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              <button
-                class="bg-amber-500 text-white active:bg-amber-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-                @click="onUpdate"
+                <span
+                  :class="[color === 'light' ? 'text-gray-600' : 'text-white']"
+                >
+                  {{ item.nama }}
+                </span>
+              </th>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                UPDATE
-              </button>
-              <button
-                class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                type="button"
-                @click="onDelete"
+                {{ item.contact }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
               >
-                DELETE
-              </button>
-            </td>
-          </tr>
+                {{ item.email }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.alamat }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.diskon }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.presentase }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                <img
+                  :src="
+                    'http://localhost:3000/public/images/customers/' + item.ktp
+                  "
+                  :class="item.ktp ? '' : 'hidden'"
+                  alt="..."
+                  class="w-10 h-10 rounded-full border-2 border-gray-50 shadow"
+                />
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                <button
+                  class="bg-amber-500 text-white active:bg-amber-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  type="button"
+                  @click="onUpdate"
+                >
+                  UPDATE
+                </button>
+                <button
+                  class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  type="button"
+                  @click="onDelete"
+                >
+                  DELETE
+                </button>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -191,13 +195,29 @@
 <script>
 import Alert from "../components/Alert.vue";
 import ButtonMixin from "../mixins/button";
+import axios from "axios";
 
 export default {
   name: "Customers",
+  created() {
+    this.getData();
+  },
   data() {
     return {
       color: "light",
+      data: [],
     };
+  },
+  methods: {
+    getData() {
+      axios
+        .get("http://localhost:3000/api/customer")
+        .then((res) => {
+          console.log(res);
+          this.data = res.data.data;
+        })
+        .catch((err) => console.log(err));
+    },
   },
   components: {
     Alert,

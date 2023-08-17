@@ -110,53 +110,55 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
-            >
-              <span
-                class="font-bold"
-                :class="[color === 'light' ? 'text-gray-600' : 'text-white']"
+          <template v-for="item in data" :key="item._id">
+            <tr>
+              <th
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
               >
-                CDN89907555555
-              </span>
-            </th>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              17 Agustus 2021
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              Muhammad Rafli
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              ASUS ROG
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              1
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              10%
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              Rp. 50.000
-            </td>
-            <td
-              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-            >
-              Rp. 45.000
-            </td>
-          </tr>
+                <span
+                  class="font-bold"
+                  :class="[color === 'light' ? 'text-gray-600' : 'text-white']"
+                >
+                  {{ item.kode_transaksi }}
+                </span>
+              </th>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.tanggal_transaksi }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.customer }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.items }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.qty }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.diskon }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.total_harga }}
+              </td>
+              <td
+                class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+              >
+                {{ item.total_bayar }}
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -173,7 +175,16 @@ export default {
       data: [],
     };
   },
-  methods: {},
+  methods: {
+    getData() {
+      axios
+        .get("http://localhost:3000/api/sales")
+        .then((res) => {
+          this.data = res.data.data;
+        })
+        .catch((err) => console.log(err));
+    },
+  },
 };
 </script>
 
